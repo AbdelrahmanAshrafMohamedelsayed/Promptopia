@@ -26,7 +26,7 @@ const PromptCard = ({
   handleTagClick,
 }: PromptCardProps) => {
   const { data: session } = useSession();
-  const user: userType = session?.user;
+  const user: userType = session?.user; // user is the current logged in user
   const pathName = usePathname();
   const router = useRouter();
 
@@ -35,15 +35,15 @@ const PromptCard = ({
   const handleProfileClick = () => {
     console.log(post);
 
-    if (post.creator._id === user?.id) return router.push("/profile");
+    if (post.creator._id === user?.id) return router.push("/profile"); // if the user is the creator of the post, redirect to your  profile page
 
-    router.push(`/profile/${post.creator._id}?name=${post.creator.username}`);
+    router.push(`/profile/${post.creator._id}?name=${post.creator.username}`); // if the user is not the creator of the post, redirect to the creator's profile page
   };
 
   const handleCopy = () => {
     setCopied(post.prompt);
     navigator.clipboard.writeText(post.prompt);
-    setTimeout(() => setCopied(false), 3000);
+    setTimeout(() => setCopied(false), 3000); // it is important for the copy icon to be visible for at least 3 seconds
   };
 
   return (
@@ -85,7 +85,9 @@ const PromptCard = ({
         </div>
       </div>
 
-      <p className="my-4 font-satoshi text-sm text-gray-700">{post.prompt}</p>
+      <p className="my-4 font-satoshi text-sm text-gray-700  break-words">
+        {post.prompt}
+      </p>
       <p
         className="font-inter text-sm blue_gradient cursor-pointer"
         onClick={() => handleTagClick && handleTagClick(post.tag)}

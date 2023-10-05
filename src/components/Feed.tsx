@@ -45,7 +45,7 @@ const Feed = () => {
   useEffect(() => {
     fetchPosts();
   }, []);
-
+  // serach filter function
   const filterPrompts = (searchtext: string): postType[] | undefined => {
     const regex = new RegExp(searchtext, "i"); // 'i' flag for case-insensitive search
     return allPosts?.filter(
@@ -55,10 +55,17 @@ const Feed = () => {
         regex.test(item.prompt)
     );
   };
-
+  /**
+   *what happens when the user types in the search bar
+   * 1. the search text is updated
+   * 2.the old timeout is cleared to start a new time for the new search text debounce
+   * 3. the new timeout is set
+   * 4. the filter function is called with the new search text
+   */
   const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (searchTimeout !== null) {
       clearTimeout(searchTimeout);
+      console.log("cleared");
     }
     setSearchText(e.target.value);
 
@@ -68,6 +75,8 @@ const Feed = () => {
       setSearchedResults(searchResult);
     }, 500);
     setSearchTimeout(x);
+    // clearTimeout(x); // this is not working because settimeout is async and the clear timeout is called before the timeout is set
+    console.log({ x });
   };
 
   const handleTagClick = (tagName: string) => {
